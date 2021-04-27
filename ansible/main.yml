@@ -1,0 +1,10 @@
+---
+- hosts: azuremachine
+  tasks:
+    - name: "Instalar MySQL"
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name: ["mysql-server-5.7", "python3-pymysql"]
+        state: latest
+      become: yes
