@@ -98,3 +98,13 @@ SELECT * FROM Exercicio;
 13 - Após finalizados os procedimentos anteriores com sucesso, destrua a infraestrutura criada com o comando
 
 `terraform destroy`
+
+## Dicas de resolução de problemas encontrados durante o desenvolvimento da atividade
+
+### Conta Azure não possuia alguns Resources providers registrados para uso
+
+Resolução: executei os comando abaixo para o Resources providers sem registro
+
+`az provider register --namespace Microsoft.Compute`
+
+`az provider register --namespace Microsoft.Network`
