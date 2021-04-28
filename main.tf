@@ -14,48 +14,48 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "myTFResourceGroup"
+resource "azurerm_resource_group" "resourcegroup" {
+  name     = "ResourceGroupTerraform"
   location = "westus2"
 }
 
-resource "azurerm_virtual_network" "main" {
-  name                = "rg-network"
+resource "azurerm_virtual_network" "virtualnetwork" {
+  name                = "VirtualNetworkTerraform"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.resourcegroup.location
+  resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.main.name
+resource "azurerm_subnet" "subnet" {
+  name                 = "SubnetTerraform"
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  virtual_network_name = azurerm_virtual_network.virtualnetwork.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_network_interface" "main" {
-  name                = "rg-nic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+resource "azurerm_network_interface" "networkinterface" {
+  name                = "NetworkInterfaceTerraform"
+  location            = azurerm_resource_group.resourcegroup.location
+  resource_group_name = azurerm_resource_group.resourcegroup.name
 
   ip_configuration {
-    name                          = "testconfiguration1"
-    subnet_id                     = azurerm_subnet.internal.id
+    name                          = "IpConfigurationTerraform"
+    subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.example.id
+    public_ip_address_id          = azurerm_public_ip.publicip.id
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "example" {
-  network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = azurerm_network_security_group.example.id
+resource "azurerm_network_interface_security_group_association" "networkinterfacesecuritygroupassociation" {
+  network_interface_id      = azurerm_network_interface.networkinterface.id
+  network_security_group_id = azurerm_network_security_group.networksecuritygroup.id
 }
 
-resource "azurerm_virtual_machine" "main" {
-  name                  = "rg-vm"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.main.id]
+resource "azurerm_virtual_machine" "virtualmachine" {
+  name                  = "UbuntuVirtualMachineTerraform"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.networkinterface.id]
   vm_size               = "Standard_DS1_v2"
 
   storage_image_reference {
@@ -65,14 +65,14 @@ resource "azurerm_virtual_machine" "main" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "myosdisk1"
+    name              = "StorageOSDiskTerraform"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
   os_profile {
-    computer_name  = "hostname"
-    admin_username = "testadmin"
+    computer_name  = "OSProfilerTerraform"
+    admin_username = "adminterraform"
     admin_password = "Password1234!"
   }
   os_profile_linux_config {
@@ -80,17 +80,17 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   tags = {
-    environment = "staging"
+    environment = "terraform"
   }
 }
 
-resource "azurerm_network_security_group" "example" {
-  name                = "acceptanceTestSecurityGroup1"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+resource "azurerm_network_security_group" "networksecuritygroup" {
+  name                = "NetworkSecurityGroupTerraform"
+  location            = azurerm_resource_group.resourcegroup.location
+  resource_group_name = azurerm_resource_group.resourcegroup.name
 
   security_rule {
-    name                       = "test123"
+    name                       = "RulePortSSHTerraform"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -103,9 +103,9 @@ resource "azurerm_network_security_group" "example" {
   
 }
 
-resource "azurerm_public_ip" "example" {
-  name                = "acceptanceTestPublicIp1"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+resource "azurerm_public_ip" "publicip" {
+  name                = "PublicIpTerraform"
+  resource_group_name = azurerm_resource_group.resourcegroup.name
+  location            = azurerm_resource_group.resourcegroup.location
   allocation_method   = "Static"
 }
