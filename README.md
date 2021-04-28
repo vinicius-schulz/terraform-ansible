@@ -65,6 +65,36 @@ Após realizados os passos de instalação anteriores, faça os seguintes proced
 
 8 - Com a infraestrutura criada, edite o arquivo na pasta ansible/hosts e substitua o IP já existente no arquivo pelo IP obtido no passo 7.
 
-9 - A partir de alguma máquina Linux, navegue para pasta ansible e execute o comando abaixo para executar o playbook main.yml na VM com Ubuntu.
+9 - A partir de alguma máquina Linux, navegue para pasta ansible e execute o comando abaixo para executar o playbook main.yml na VM com Ubuntu. Aguarde a instalação. 
 
 `ansible-playbook -i hosts main.yml`
+
+10 - Após instalado o MySql pelo passo anterior, a partir de uma máquina linux, logue na máquina, via ssh, usando o comando abaixo:
+
+`sudo ssh <usuario>@<ip da virtual machine obtido no passo 7>`
+
+11 - Execute o comando abaixo para entrar no mysql
+
+`sudo mysql -u root`
+
+12 - Execute os comandos a seguir para criar um banco de dados, uma tabela, inserir dado e visualizar o mesmo.
+
+```sql
+CREATE DATABASE dbvagrant;
+USE dbvagrant;
+CREATE TABLE Exercicio (
+  idExercicio mediumint(8) unsigned NOT NULL auto_increment,
+  descricao varchar(255),
+  dataEntrega DATE,
+  nomeProfessor varchar(255),
+  PRIMARY KEY (`idExercicio`)
+) AUTO_INCREMENT=1;
+
+INSERT INTO Exercicio(descricao,dataEntrega,nomeProfessor) VALUES ('Exercicio 1', STR_TO_DATE('21-04-2021', '%d-%m-%Y'), "Joao Henrique Victorino da Silva");
+
+SELECT * FROM Exercicio;
+```
+
+13 - Após finalizados os procedimentos anteriores com sucesso, destrua a infraestrutura criada com o comando
+
+`terraform destroy`
