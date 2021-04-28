@@ -1,8 +1,8 @@
 [azuremachine]
-20.98.89.73
+13.77.143.12
 
 [azuremachine:vars]
-ansible_user=testadmin
+ansible_user=adminterraform
 ansible_ssh_pass=Password1234!
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'

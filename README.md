@@ -37,3 +37,34 @@ Execute o comando abaixo caso o sshpass não esteja instalado
 
 `sudo apt-get install sshpass`
 
+## Provisionando Recursos na Azure com Terraform
+
+Após realizados os passos de instalação anteriores, faça os seguintes procedimentos:
+
+1 - Abra o Terminal, cmd ou PowerShell
+
+2 - Clone o projeto usando o comando:
+
+`git clone https://github.com/vinicius-schulz/terraform-ansible.git`
+
+3 - Navegue para o diretório clonado
+
+4 - Logue no conta do Azure
+
+`az login -u <email> -p <senha>`
+
+5 - Execute o comando abaixo para visualizar as modificações que o terraform fará na sua conta Azure
+
+`terraform plan`
+
+6 - Execute o comando abaixo para criar sua infraestrutura na sua conta da Azure. Aguarde a criação.
+
+`terraform apply -auto-approve`
+
+7 - Entre na sua conta da Azure e verifique se o Resource 'ResourceGroupTerraform' foi criado. Caso tenha ocorrido tudo certo com o processo de criação da Virtual Machine, entre no recuro 'NetworkInterfaceTerraform' criado e obtenha o IP público associado ao dispositivo e copie-o.
+
+8 - Com a infraestrutura criada, edite o arquivo na pasta ansible/hosts e substitua o IP já existente no arquivo pelo IP obtido no passo 7.
+
+9 - A partir de alguma máquina Linux, navegue para pasta ansible e execute o comando abaixo para executar o playbook main.yml na VM com Ubuntu.
+
+`ansible-playbook -i hosts main.yml`
