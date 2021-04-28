@@ -80,8 +80,8 @@ Após realizados os passos de instalação anteriores, faça os seguintes proced
 12 - Execute os comandos a seguir para criar um banco de dados, uma tabela, inserir dado e visualizar o mesmo.
 
 ```sql
-CREATE DATABASE dbvagrant;
-USE dbvagrant;
+CREATE DATABASE dbterraform;
+USE dbterraform;
 CREATE TABLE Exercicio (
   idExercicio mediumint(8) unsigned NOT NULL auto_increment,
   descricao varchar(255),
